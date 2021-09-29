@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'apps.cart',
     'christmasstore',
     'apps.core',
+    'apps.order',
     'apps.product',
     'apps.vendor',
 
