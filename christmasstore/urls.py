@@ -32,7 +32,7 @@ urlpatterns = [
     path('vendors/', include('apps.vendor.urls')),
     path('cart/', include('apps.cart.urls')),
     path('', include('apps.core.urls')),
-    # path('', include('apps.product.urls')),
+    path('', include('apps.product.urls')),
     path('docs/', include_docs_urls(title='Anastasiia API')),
     path('swagger-docs/', schema_view),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
