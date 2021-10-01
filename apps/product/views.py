@@ -4,10 +4,22 @@ from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
+
 from .forms import AddToCartForm
 from .models import Category, Product
 
 from apps.cart.cart import Cart
+
+from .serializers import ProductSerializer
+from rest_framework import generics
+
+class ProductList(generics.ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+class ProductDetail(generics.RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
 def search(request):
     query = request.GET.get('query', '')
@@ -45,3 +57,4 @@ def category(request, category_slug):
     category = get_object_or_404(Category, slug=category_slug)
 
     return render(request, 'product/category.html', {'category': category})
+
