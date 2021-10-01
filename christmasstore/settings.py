@@ -28,12 +28,22 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+STRIPE_PUB_KEY = 'pk_test_51Jf7LnAvuybkDXhsh3LgBxBvWFozJZGT7VD9Ut9EylNEOOncthHy3FWxfISmyeEh2SiCNmrEsH2P6889s2U1DCSe00v4jiQffl'
+STRIPE_SECRET_KEY = 'sk_test_51Jf7LnAvuybkDXhsav9l53W1LvFpVMuSD0gLnifuUV2gSfziMzYgqFXZ2hazxK6rds6rzNZzMsZf9KRYfV7ZGMax00L6eJgKi5'
+
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'vendor_admin'
 LOGOUT_REDIRECT_URL = 'frontpage'
 
 SESSION_COOKIE_AGE = 86400
 CART_SESSION_ID = 'cart'
+
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = 'sk_test_51Jf7LnAvuybkDXhsav9l53W1LvFpVMuSD0gLnifuUV2gSfziMzYgqFXZ2hazxK6rds6rzNZzMsZf9KRYfV7ZGMax00L6eJgKi5'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_EMAIL_FROM = 'Christmasstore <anadjango8gmail.com>'
 
 # Application definition
 
@@ -44,6 +54,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django.contrib.sites',
+    'rest_framework_swagger',
+
+    'rest_framework',
+    'rest_framework.authtoken',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    'rest_auth',
+    'rest_auth.registration',
+
     'apps.cart',
     'christmasstore',
     'apps.core',
@@ -146,3 +169,25 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+SITE_ID = 1
+
+REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'}
+
+SWAGGER_SETTINGS = {
+    'LOGIN_URL': 'rest_framework:login',
+    'LOGOUT_URL': 'rest_framework:logout',
+}
