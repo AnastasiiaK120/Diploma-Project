@@ -16,7 +16,7 @@
     </head>
 
     <body>
-        <nav class="navbar is-dark">
+        <nav class="navbar is-success">
             <div class="navbar-brand">
                 <a href="/" class="navbar-item"><strong>Christmas store</strong></a>
 
@@ -72,6 +72,11 @@
             {% else %}
                 <a href="{% url 'become_vendor' %}">Become vendor</a>
             {% endif %}
+
+            <a href="{% url 'vendors' %}">Vendors</a>
         </footer>
+
+        {% block scripts %}
+        {% endblock %}
     </body>
 </html>

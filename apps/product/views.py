@@ -1,13 +1,42 @@
 import random
 
+from rest_framework import generics, permissions
+from django.contrib.auth import get_user_model
+
+
 from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
+
 
 from .forms import AddToCartForm
 from .models import Category, Product
 
 from apps.cart.cart import Cart
+
+from .serializers import ProductSerializer, UserSerializer
+from .permissions import IsOwnerOrReadOnly
+
+
+class ProductList(generics.ListCreateAPIView):
+    # permission_classes = (permissions.IsAuthenticated,)
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+class UserList(generics.ListCreateAPIView):
+    queryset = get_user_model().objects.all()
+    serializer_class = UserSerializer
+
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = get_user_model().objects.all()
+    serializer_class = UserSerializer
+
+
 
 def search(request):
     query = request.GET.get('query', '')
@@ -45,3 +74,4 @@ def category(request, category_slug):
     category = get_object_or_404(Category, slug=category_slug)
 
     return render(request, 'product/category.html', {'category': category})
+
