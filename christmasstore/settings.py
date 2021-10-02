@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,15 +24,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--1qf$8+2@4p_mb!^t%6*s=jzgvhrbpe)&-ud=b6(r#^%+!klb7'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-STRIPE_PUB_KEY = 'pk_test_51Jf7LnAvuybkDXhsh3LgBxBvWFozJZGT7VD9Ut9EylNEOOncthHy3FWxfISmyeEh2SiCNmrEsH2P6889s2U1DCSe00v4jiQffl'
-STRIPE_SECRET_KEY = 'sk_test_51Jf7LnAvuybkDXhsav9l53W1LvFpVMuSD0gLnifuUV2gSfziMzYgqFXZ2hazxK6rds6rzNZzMsZf9KRYfV7ZGMax00L6eJgKi5'
+STRIPE_PUB_KEY = os.getenv('STRIPE_PUB_KEY')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'vendor_admin'
@@ -40,10 +43,10 @@ CART_SESSION_ID = 'cart'
 
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = 'sk_test_51Jf7LnAvuybkDXhsav9l53W1LvFpVMuSD0gLnifuUV2gSfziMzYgqFXZ2hazxK6rds6rzNZzMsZf9KRYfV7ZGMax00L6eJgKi5'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_EMAIL_FROM = 'Christmasstore <anadjango8gmail.com>'
+DEFAULT_EMAIL_FROM = os.getenv('DEFAULT_EMAIL_FROM')
 
 # Application definition
 
@@ -112,14 +115,23 @@ WSGI_APPLICATION = 'christmasstore.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+DATABASES={
+   'default':{
+      'ENGINE':'django.db.backends.postgresql_psycopg2',
+      'NAME':'christmasstore',
+      'USER':'christmasstore',
+      'PASSWORD': os.environ['DATABASE_PASSWORD'],
+      'HOST':'localhost',
+      'PORT':'5432',
+   }
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
