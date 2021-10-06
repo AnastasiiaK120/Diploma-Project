@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 STRIPE_PUB_KEY = os.getenv('STRIPE_PUB_KEY')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
@@ -124,12 +124,12 @@ WSGI_APPLICATION = 'christmasstore.wsgi.application'
 
 DATABASES={
    'default':{
-      'ENGINE':'django.db.backends.postgresql_psycopg2',
-      'NAME':'christmasstore',
-      'USER':'christmasstore',
-      'PASSWORD': os.environ['DATABASE_PASSWORD'],
-      'HOST':'localhost',
-      'PORT':'5432',
+      'ENGINE': 'django.db.backends.postgresql_psycopg2',
+      'NAME': 'store',
+      'USER': 'postgres',
+      'PASSWORD': '90smgn',
+      'HOST': 'localhost',
+      'PORT': '5432',
    }
 }
 # Password validation
