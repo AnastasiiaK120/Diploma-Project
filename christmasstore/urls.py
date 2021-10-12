@@ -18,14 +18,17 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
+from rest_framework.schemas import get_schema_view
 from rest_framework_swagger.views import get_swagger_view
 from rest_framework.documentation import include_docs_urls
 
 schema_view = get_swagger_view(title='Anastasiia API')
 
 urlpatterns = [
+    path('accounts/', include('allauth.urls')),
     path('admin/', admin.site.urls),
-    path('api/v1/', include('apps.product.urls')),
+    #path('api/v1/', include('apps.product.urls')),
+    path('api/', include('apps.api.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('api/v1/rest-auth/', include('rest_auth.urls')),
     path('api/v1/rest-auth/registration/', include('rest_auth.registration.urls')),
