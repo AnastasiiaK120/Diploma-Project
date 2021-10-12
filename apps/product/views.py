@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
-
+from rest_framework.viewsets import ModelViewSet
 
 from .forms import AddToCartForm
 from .models import Category, Product
@@ -18,15 +18,56 @@ from .serializers import ProductSerializer, UserSerializer
 from .permissions import IsOwnerOrReadOnly
 
 
-class ProductList(generics.ListCreateAPIView):
-    # permission_classes = (permissions.IsAuthenticated,)
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+from django.http import Http404
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
 
-class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsOwnerOrReadOnly,)
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
+class ProductDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return Product.objects.get(pk=pk)
+        except Product.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        product = self.get_object(pk)
+        serializer = ProductSerializer(product)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        product = self.get_object(pk)
+        serializer = ProductSerializer(product, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        product = self.get_object(pk)
+        product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ProductList(APIView):
+    def get(self, request, format=None):
+        products = Product.objects.all()
+        serializer = ProductSerializer(products, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = ProductSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
+#     permission_classes = (IsOwnerOrReadOnly,)
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+
 
 class UserList(generics.ListCreateAPIView):
     queryset = get_user_model().objects.all()
@@ -36,6 +77,9 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
 
+# class ListProduct(generics.ListAPIView):
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
 
 
 def search(request):

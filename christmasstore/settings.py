@@ -41,12 +41,14 @@ LOGOUT_REDIRECT_URL = 'frontpage'
 SESSION_COOKIE_AGE = 86400
 CART_SESSION_ID = 'cart'
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'anadjango8@gmail.com'
+EMAIL_HOST_PASSWORD = 'hA8WMjfJcP4X4Zd'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_EMAIL_FROM = os.getenv('DEFAULT_EMAIL_FROM')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_EMAIL_FROM = 'anadjango8@gmail.com'
 
 # Application definition
 
@@ -57,15 +59,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'django.contrib.sites',
-    'rest_framework_swagger',
 
+    'rest_framework_swagger',
     'rest_framework',
     'rest_framework.authtoken',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 
     'rest_auth',
     'rest_auth.registration',
@@ -76,6 +79,7 @@ INSTALLED_APPS = [
     'apps.order',
     'apps.product',
     'apps.vendor',
+    'apps.api',
 
 ]
 
@@ -87,6 +91,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'christmasstore.urls'
@@ -104,34 +110,44 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'apps.product.context_processors.menu_categories',
                 'apps.cart.context_processors.cart',
+
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
 
+
 WSGI_APPLICATION = 'christmasstore.wsgi.application'
 
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+     }
+ }
 
-DATABASES={
-   'default':{
-      'ENGINE': 'django.db.backends.postgresql_psycopg2',
-      'NAME': 'store',
-      'USER': 'postgres',
-      'PASSWORD': '90smgn',
-      'HOST': 'localhost',
-      'PORT': '5432',
-   }
-}
+#DATABASES={
+   #'default':{
+    #  'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #  'NAME': 'store',
+    #  'USER': 'postgres',
+    #  'PASSWORD': '90smgn',
+    #    'HOST': 'localhost',
+    #  'PORT': '5432',
+ #  }
+#}
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -182,6 +198,7 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
 
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -194,7 +211,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_ID = 1
 
 REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'}
@@ -203,3 +219,18 @@ SWAGGER_SETTINGS = {
     'LOGIN_URL': 'rest_framework:login',
     'LOGOUT_URL': 'rest_framework:logout',
 }
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '123',
+            'secret': '456',
+            'key': ''
+        }
+    }
+}
+

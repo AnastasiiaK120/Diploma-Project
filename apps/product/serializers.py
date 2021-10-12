@@ -5,10 +5,11 @@ from .models import Product
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = '__all__'
+        fields = ('id', 'category', 'vendor', 'title', 'slug', 'description', 'price', 'date_added', 'image', 'thumbnail')
         model = Product
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('id', 'username')
         model = get_user_model()
+
