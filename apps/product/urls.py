@@ -3,7 +3,8 @@ from django.urls import path
 from . import views
 
 
-from .views import ProductList, ProductDetail, UserDetail, UserList
+from .views import UserDetail, UserList, ProductDetail, ProductList
+
 
 urlpatterns = [
     path('users/', UserList.as_view()),
