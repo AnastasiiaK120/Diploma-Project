@@ -18,7 +18,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
-from rest_framework.schemas import get_schema_view
+#from rest_framework.schemas import get_schema_view
 from rest_framework_swagger.views import get_swagger_view
 from rest_framework.documentation import include_docs_urls
 
@@ -29,6 +29,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     #path('api/v1/', include('apps.product.urls')),
     path('api/', include('apps.api.urls')),
+    path('docs/', include_docs_urls(title='Anastasiia API')),
+    path('swagger-docs/', schema_view),
     path('api-auth/', include('rest_framework.urls')),
     path('api/v1/rest-auth/', include('rest_auth.urls')),
     path('api/v1/rest-auth/registration/', include('rest_auth.registration.urls')),
@@ -36,7 +38,7 @@ urlpatterns = [
     path('cart/', include('apps.cart.urls')),
     path('', include('apps.core.urls')),
     path('', include('apps.product.urls')),
-    path('docs/', include_docs_urls(title='Anastasiia API')),
-    path('swagger-docs/', schema_view),
+    #path('docs/', include_docs_urls(title='Anastasiia API')),
+    #path('swagger-docs/', schema_view),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

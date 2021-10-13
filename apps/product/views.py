@@ -63,23 +63,23 @@ class ProductList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
-#     permission_classes = (IsOwnerOrReadOnly,)
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
+class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
 
 class UserList(generics.ListCreateAPIView):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
-
+#
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
 
-# class ListProduct(generics.ListAPIView):
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
+class ListProduct(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
 
 
 def search(request):
