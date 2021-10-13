@@ -7,7 +7,8 @@ from django.shortcuts import render, redirect
 from .cart import Cart
 from .forms import CheckoutForm
 
-from apps.order.utilities import checkout, notify_customer, notify_vendor
+from apps.order.utilities import checkout, notify_customer,  notify_vendor
+
 
 def cart_detail(request):
     cart = Cart(request)
@@ -24,7 +25,7 @@ def cart_detail(request):
                 charge = stripe.Charge.create(
                     amount=int(cart.get_total_cost() * 100),
                     currency='USD',
-                    description='Charge from Interiorshop',
+                    description='Charge from Charistmas store',
                     source=stripe_token
                 )
 

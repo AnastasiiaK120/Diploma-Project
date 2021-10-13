@@ -6,6 +6,7 @@ from apps.cart.cart import Cart
 
 from .models import Order, OrderItem
 
+
 def checkout(request, first_name, last_name, email, address, zipcode, place, phone, amount):
     order = Order.objects.create(first_name=first_name, last_name=last_name, email=email, address=address,
                                  zipcode=zipcode, place=place, phone=phone, paid_amount=amount)
@@ -32,6 +33,8 @@ def notify_vendor(order):
         msg.send()
 
 def notify_customer(order):
+    print('LOOK AT ME SENDING AN EMAIL...'
+          '')
     from_email = settings.DEFAULT_EMAIL_FROM
 
     to_email = order.email
@@ -42,3 +45,5 @@ def notify_customer(order):
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
     msg.attach_alternative(html_content, 'text/html')
     msg.send()
+
+
